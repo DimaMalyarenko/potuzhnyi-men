@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Потужний Мен</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#eff8f0;color:#194b2b}
+header{display:flex;align-items:center;justify-content:space-between;padding:17px;background:#d9efdc}
+h1{font-size:22px;margin:0}
+main{max-width:520px;margin:auto;padding:18px}
+button{border:0;border-radius:13px;padding:14px;background:#2e9850;color:white;font-size:15px;font-weight:bold;cursor:pointer}
+button:active{opacity:.8}
+.profile-btn{background:white;color:#246b37;padding:11px}
+.card{background:white;border-radius:18px;padding:18px;margin:14px 0}
+h2{font-size:21px;margin:5px 0 14px}
+h3{margin:5px 0 12px}
+p{line-height:1.5}
+.menu{display:grid;gap:11px}
+.menu button{text-align:left;width:100%;background:white;color:#246b37;border:1px solid #d8eadb}
+.menu button span{font-size:20px;margin-right:10px}
+.bot-button{width:100%;background:#238c49;line-height:1.4}
+.screen{display:none}
+.screen.active{display:block}
+input{width:100%;padding:14px;margin:7px 0 14px;border:1px solid #c6ddca;border-radius:11px;font-size:16px}
+label{font-size:14px;font-weight:bold}
+.back{background:#dcefe0;color:#246b37;margin-bottom:12px}
+.small{font-size:12px;color:#718477}
+.avatar-list{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.avatar-choice{font-size:25px;background:#e6f4e8;color:#194b2b;padding:10px;border:2px solid transparent}
+.avatar-choice.selected{border-color:#238c49}
+.avatar{font-size:45px}
+.photo{width:85px;height:85px;border-radius:50%;object-fit:cover}
+.notice{background:#fff5d9;color:#735c18;padding:12px;border-radius:12px;font-size:13px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>💚 Потужний Мен</h1>
+<button class="profile-btn" onclick="show('profile')">👤 Профіль</button>
+</header>
+
+<main>
+
+<section id="register" class="screen">
+<div class="card">
+<h2>Ласкаво просимо! 👋</h2>
+<p>Створи акаунт у Потужному Мені.</p>
+<h3>Обери спосіб реєстрації</h3>
+<button style="width:100%" onclick="telegramLogin()">✈️ Продовжити через Telegram</button>
+<p style="text-align:center">або створи окремий акаунт</p>
+
+<form onsubmit="register(event)">
+<label>Ім'я профілю</label>
+<input id="name" placeholder="Як тебе називати?" required>
+
+<label>Унікальний логін</label>
+<input id="login" placeholder="Наприклад, potuzhnyi123" required>
+
+<label>Пароль</label>
+<input id="password" type="password" placeholder="Від 8 символів" minlength="8" required>
+
+<label>Обери аватар</label>
+<div class="avatar-list">
+<button type="button" class="avatar-choice selected" onclick="chooseAvatar(this,'😎')">😎</button>
+<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🚀')">🚀</button>
+<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🐱')">🐱</button>
+<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🦊')">🦊</button>
+<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🤖')">🤖</button>
+<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'💚')">💚</button>
+</div>
+<label>Або завантаж власне фото</label>
+<input type="file" id="photo" accept="image/*">
+<button type="submit" style="width:100%">Створити акаунт</button>
+</form>
+<p class="small">Це демонстраційна реєстрація для цього браузера. Справжню захищену авторизацію підключимо через сервер.</p>
+</div>
+</section>
+
+<section id="home" class="screen">
+<div class="card">
+<h2>Привіт! 👋</h2>
+<p>Бажаєте щось дізнатися?</p>
+<p class="small">Ласкаво просимо у світ Потужного Мена!</p>
+</div>
+
+<h2>✨ Функції бота</h2>
+<div class="card">
+<button class="bot-button" onclick="openBot()">
+✨ Надіслати повідомлення потужному за зірки ✨📩
+</button>
+</div>
+
+<h2>Основні функції</h2>
+<div class="menu">
+<button onclick="show('messages')"><span>💬</span>Повідомлення</button>
+<button onclick="show('communities')"><span>👥</span>Спільноти</button>
+<button onclick="show('settings')"><span>⚙️</span>Налаштування</button>
+</div>
+</section>
+
+<section id="profile" class="screen">
+<button class="back" onclick="show('home')">← Назад</button>
+<div class="card">
+<h2>👤 Мій профіль</h2>
+<div id="profileAvatar" class="avatar">😎</div>
+<h3 id="profileName">Користувач</h3>
+<p id="profileLogin"></p>
+<p>⭐ Рівень: Новачок</p>
+<p>✨ Досвід: 0 XP</p>
+</div>
+</section>
+
+<section id="messages" class="screen">
+<button class="back" onclick="show('home')">← Назад</button>
+<div class="card">
+<h2>💬 Повідомлення</h2>
+<p>Тут будуть твої особисті чати.</p>
+<p class="small">Функція ще розробляється.</p>
+</div>
+</section>
+
+<section id="communities" class="screen">
+<button class="back" onclick="show('home')">← Назад</button>
+<div class="card">
+<h2>👥 Спільноти</h2>
+<p>Тут будуть твої спільноти.</p>
+<p class="small">Створення та пошук спільнот додамо пізніше.</p>
+</div>
+</section>
+
+<section id="settings" class="screen">
+<button class="back" onclick="show('home')">← Назад</button>
+<div class="card">
+<h2>⚙️ Налаштування</h2>
+<p>Налаштування акаунта з'являться тут.</p>
+<button onclick="logout()">Вийти з акаунта</button>
+</div>
+</section>
+
+</main>
+
+<script>
+let selectedAvatar='😎';
+let photoData='';
+
+function chooseAvatar(button,emoji){
+ selectedAvatar=emoji;
+ photoData='';
+ document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));
+ button.classList.add('selected');
+ document.getElementById('photo').value='';
+}
+
+document.getElementById('photo').addEventListener('change',function(){
+ const file=this.files[0];
+ if(!file)return;
+ if(file.size>1000000){
+  alert('Фото має бути менше 1 МБ.');
+  this.value='';
+  return;
+ }
+ const reader=new FileReader();
+ reader.onload=()=>{
+  photoData=reader.result;
+  selectedAvatar='';
+  document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));
+ };
+ reader.readAsDataURL(file);
+});
+
+function show(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+}
+
+function register(event){
+ event.preventDefault();
+ const name=document.getElementById('name').value.trim();
+ const login=document.getElementById('login').value.trim();
+ const password=document.getElementById('password').value;
+
+ if(!name||!login||password.length<8){
+  alert('Перевір заповнення полів. Пароль має бути не коротшим за 8 символів.');
+  return;
+ }
+ const user={name,login,avatar:photoData||selectedAvatar};
+ try{
+  localStorage.setItem('potuzhnyi_demo_profile',JSON.stringify(user));
+ }catch(e){
+  alert('Не вдалося зберегти профіль. Спробуй інше фото.');
+  return;
+ }
+ document.getElementById('password').value='';
+ loadProfile();
+ show('home');
+}
+
+function loadProfile(){
+ const user=JSON.parse(localStorage.getItem('potuzhnyi_demo_profile')||'null');
+ if(!user)return false;
+ document.getElementById('profileName').textContent=user.name;
+ document.getElementById('profileLogin').textContent='@'+user.login;
+ const avatar=document.getElementById('profileAvatar');
+ if(user.avatar.startsWith('data:image')){
+  avatar.innerHTML='<img class="photo" src="'+user.avatar+'" alt="Аватар">';
+ }else{
+  avatar.textContent=user.avatar;
+ }
+ return true;
+}
+
+function logout(){
+ localStorage.removeItem('potuzhnyi_demo_profile');
+ show('register');
+}
+
+function telegramLogin(){
+ alert('Підключення справжньої авторизації Telegram додамо окремо.');
+}
+
+function openBot(){
+ window.open('https://t.me/Halabuda_PotugnogoMena?direct','_blank');
+}
+
+if(loadProfile()){
+ show('home');
+}else{
+ show('register');
+}
+</script>
+</body>
+</html>
