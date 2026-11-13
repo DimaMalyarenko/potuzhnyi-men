@@ -33,25 +33,19 @@ label{font-size:14px;font-weight:bold}
 .avatar-choice.selected{border-color:#238c49}
 .avatar{font-size:45px}
 .photo{width:85px;height:85px;border-radius:50%;object-fit:cover}
-.notice{background:#fff5d9;color:#735c18;padding:12px;border-radius:12px;font-size:13px}
 </style>
 </head>
 <body>
-
 <header>
 <h1>💚 Потужний Мен</h1>
-<button class="profile-btn" onclick="show('profile')">👤 Профіль</button>
+<button id="profileButton" class="profile-btn" style="display:none" onclick="show('profile')">👤 Профіль</button>
 </header>
 
 <main>
-
 <section id="register" class="screen">
 <div class="card">
 <h2>Ласкаво просимо! 👋</h2>
 <p>Створи акаунт у Потужному Мені.</p>
-<h3>Обери спосіб реєстрації</h3>
-<button style="width:100%" onclick="telegramLogin()">✈️ Продовжити через Telegram</button>
-<p style="text-align:center">або створи окремий акаунт</p>
 
 <form onsubmit="register(event)">
 <label>Ім'я профілю</label>
@@ -72,18 +66,21 @@ label{font-size:14px;font-weight:bold}
 <button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🤖')">🤖</button>
 <button type="button" class="avatar-choice" onclick="chooseAvatar(this,'💚')">💚</button>
 </div>
+
 <label>Або завантаж власне фото</label>
 <input type="file" id="photo" accept="image/*">
+
 <button type="submit" style="width:100%">Створити акаунт</button>
 </form>
-<p class="small">Це демонстраційна реєстрація для цього браузера. Справжню захищену авторизацію підключимо через сервер.</p>
+
+<p class="small">Демонстраційна реєстрація для цього браузера. Захищену авторизацію підключимо пізніше.</p>
 </div>
 </section>
 
 <section id="home" class="screen">
 <div class="card">
-<h2>Привіт! 👋</h2>
-<p>Бажаєте щось дізнатися?</p>
+<h2 id="welcome">Привіт! 👋</h2>
+<p>Бажаєш щось дізнатися?</p>
 <p class="small">Ласкаво просимо у світ Потужного Мена!</p>
 </div>
 
@@ -140,7 +137,6 @@ label{font-size:14px;font-weight:bold}
 <button onclick="logout()">Вийти з акаунта</button>
 </div>
 </section>
-
 </main>
 
 <script>
@@ -175,10 +171,14 @@ document.getElementById('photo').addEventListener('change',function(){
 function show(id){
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  document.getElementById(id).classList.add('active');
+
+ const profileButton=document.getElementById('profileButton');
+ profileButton.style.display=id==='register'?'none':'block';
 }
 
 function register(event){
  event.preventDefault();
+
  const name=document.getElementById('name').value.trim();
  const login=document.getElementById('login').value.trim();
  const password=document.getElementById('password').value;
@@ -187,13 +187,20 @@ function register(event){
   alert('Перевір заповнення полів. Пароль має бути не коротшим за 8 символів.');
   return;
  }
- const user={name,login,avatar:photoData||selectedAvatar};
+
+ const user={
+  name,
+  login,
+  avatar:photoData||selectedAvatar
+ };
+
  try{
   localStorage.setItem('potuzhnyi_demo_profile',JSON.stringify(user));
  }catch(e){
   alert('Не вдалося зберегти профіль. Спробуй інше фото.');
   return;
  }
+
  document.getElementById('password').value='';
  loadProfile();
  show('home');
@@ -202,8 +209,11 @@ function register(event){
 function loadProfile(){
  const user=JSON.parse(localStorage.getItem('potuzhnyi_demo_profile')||'null');
  if(!user)return false;
+
  document.getElementById('profileName').textContent=user.name;
  document.getElementById('profileLogin').textContent='@'+user.login;
+ document.getElementById('welcome').textContent='Привіт, '+user.name+'! 👋';
+
  const avatar=document.getElementById('profileAvatar');
  if(user.avatar.startsWith('data:image')){
   avatar.innerHTML='<img class="photo" src="'+user.avatar+'" alt="Аватар">';
@@ -216,10 +226,6 @@ function loadProfile(){
 function logout(){
  localStorage.removeItem('potuzhnyi_demo_profile');
  show('register');
-}
-
-function telegramLogin(){
- alert('Підключення справжньої авторизації Telegram додамо окремо.');
 }
 
 function openBot(){
