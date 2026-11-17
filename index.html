@@ -96,9 +96,10 @@ label{font-size:13px;color:var(--muted)}
 .hidden{display:none!important}
 .muted{color:var(--muted)}
 .avatar{
-  width:90px;height:90px;border-radius:50%;
+  width:100px;height:100px;border-radius:50%;
   display:grid;place-items:center;background:#203b29;
-  font-size:44px;margin-bottom:15px;overflow:hidden
+  font-size:44px;margin-bottom:15px;overflow:hidden;
+  border:2px solid var(--green)
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
 .stat{font-size:27px;color:var(--green);font-weight:bold}
@@ -116,6 +117,8 @@ label{font-size:13px;color:var(--muted)}
   padding:9px;font-size:14px
 }
 .text-button:hover{text-decoration:underline}
+.avatar-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.avatar-status{font-size:13px;color:var(--muted);margin-top:8px}
 @media(max-width:760px){
   .layout{display:block}
   .sidebar{width:100%;padding:13px;gap:10px;border-right:0;border-bottom:1px solid var(--border)}
@@ -137,15 +140,12 @@ label{font-size:13px;color:var(--muted)}
   <div class="auth-card">
     <h1>💚 Потужний Мен</h1>
     <p class="muted">Твоя платформа. Твої можливості.</p>
-
     <div id="authNotice" class="notice hidden"></div>
-
     <h2 id="authTitle">Вхід до акаунта</h2>
 
     <div id="registerFields" class="hidden">
       <label for="nameInput">Ім'я</label>
       <input id="nameInput" placeholder="Як тебе звати?">
-
       <label for="usernameInput">Унікальний логін</label>
       <input id="usernameInput" placeholder="Наприклад, potuzhnyi">
     </div>
@@ -165,19 +165,9 @@ label{font-size:13px;color:var(--muted)}
       <input id="confirmPasswordInput" type="password" placeholder="Повтори пароль">
     </div>
 
-    <button class="action" style="width:100%" id="authSubmit" onclick="submitAuth()">
-      Увійти
-    </button>
-
-    <button class="text-button" id="forgotButton" onclick="showForgotMode()">
-      Забули пароль?
-    </button>
-
-    <button class="secondary" style="width:100%;margin-top:9px"
-      id="authSwitch" onclick="toggleAuth()">
-      Створити акаунт
-    </button>
-
+    <button class="action" style="width:100%" id="authSubmit" onclick="submitAuth()">Увійти</button>
+    <button class="text-button" id="forgotButton" onclick="showForgotMode()">Забули пароль?</button>
+    <button class="secondary" style="width:100%;margin-top:9px" id="authSwitch" onclick="toggleAuth()">Створити акаунт</button>
     <p class="footer-note">Вхід і реєстрація захищені Supabase Auth.</p>
   </div>
 </div>
@@ -187,7 +177,6 @@ label{font-size:13px;color:var(--muted)}
     <div class="brand">💚 ПОТУЖНИЙ МЕН
       <small>VERSION 2.0</small>
     </div>
-
     <nav class="nav">
       <button class="active" data-page="home" onclick="go('home',this)">⌂ Головна</button>
       <button data-page="profile" onclick="go('profile',this)">👤 Профіль</button>
@@ -197,7 +186,6 @@ label{font-size:13px;color:var(--muted)}
       <button data-page="admin" id="adminNav" class="hidden" onclick="go('admin',this)">🛡️ Адмінпанель</button>
       <button data-page="settings" onclick="go('settings',this)">⚙️ Налаштування</button>
     </nav>
-
     <div class="side-bottom muted">Потужний Мен © 2026</div>
   </aside>
 
@@ -214,26 +202,22 @@ label{font-size:13px;color:var(--muted)}
           <p>Місце для спілкування, нових знайомств, спільнот та цікавих ігор.</p>
           <button class="action" onclick="go('profile',document.querySelector('[data-page=profile]'))">Мій профіль</button>
         </div>
-
         <div class="grid">
           <div class="card">
             <h3>♟️ Шахи онлайн</h3>
             <p>Готуються матчі з друзями та випадковими суперниками.</p>
             <button class="secondary" onclick="go('chess',document.querySelector('[data-page=chess]'))">Відкрити шахи</button>
           </div>
-
           <div class="card">
             <h3>👥 Спільноти</h3>
             <p>Тут з'являться тематичні спільноти та обговорення.</p>
             <button class="secondary" onclick="go('communities',document.querySelector('[data-page=communities]'))">До спільнот</button>
           </div>
-
           <div class="card">
             <h3>✉️ Повідомлення</h3>
             <p>Особисте спілкування між користувачами платформи.</p>
             <button class="secondary" onclick="go('messages',document.querySelector('[data-page=messages]'))">Відкрити</button>
           </div>
-
           <div class="card">
             <h3>📈 Мій прогрес</h3>
             <p id="homeLevel">Рівень: 1 · XP: 0</p>
@@ -247,6 +231,14 @@ label{font-size:13px;color:var(--muted)}
         <div class="card">
           <h2>Мій профіль</h2>
           <div class="avatar" id="avatarView">😎</div>
+
+          <div class="avatar-actions">
+            <button class="action" id="avatarButton" onclick="chooseAvatar()">📸 Змінити фото</button>
+            <button class="secondary" id="removeAvatarButton" onclick="removeAvatar()">Видалити фото</button>
+          </div>
+          <input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="uploadAvatar(event)">
+          <div id="avatarStatus" class="avatar-status">JPG, PNG або WEBP. Максимум 5 МБ.</div>
+
           <h3 id="profileName">Користувач</h3>
           <p class="muted" id="profileUsername">@username</p>
           <p id="profileRole" style="color:var(--green);font-weight:bold"></p>
@@ -341,7 +333,6 @@ function resetAuthView(){
   registering=false;
   forgotMode=false;
   recoveryMode=false;
-
   $('registerFields').classList.add('hidden');
   $('emailGroup').classList.remove('hidden');
   $('passwordGroup').classList.remove('hidden');
@@ -357,13 +348,11 @@ function resetAuthView(){
 function toggleAuth(){
   resetAuthView();
   registering=true;
-
   $('authTitle').textContent='Створення акаунта';
   $('authSubmit').textContent='Зареєструватися';
   $('authSwitch').textContent='У мене вже є акаунт';
   $('registerFields').classList.remove('hidden');
   $('forgotButton').classList.add('hidden');
-
   clearAuthMessage();
 }
 
@@ -378,33 +367,27 @@ function showLoginMode(){
 function showForgotMode(){
   resetAuthView();
   forgotMode=true;
-
   $('authTitle').textContent='Відновлення пароля';
   $('authSubmit').textContent='Надіслати лист';
   $('authSwitch').textContent='Повернутися до входу';
-
   $('passwordGroup').classList.add('hidden');
   $('registerFields').classList.add('hidden');
   $('forgotButton').classList.add('hidden');
-
   clearAuthMessage();
 }
 
 function showRecoveryMode(){
   resetAuthView();
   recoveryMode=true;
-
   $('authTitle').textContent='Створення нового пароля';
   $('authSubmit').textContent='Зберегти новий пароль';
   $('passwordLabel').textContent='Новий пароль';
   $('passwordInput').placeholder='Введи новий пароль';
-
   $('emailGroup').classList.add('hidden');
   $('registerFields').classList.add('hidden');
   $('confirmPasswordGroup').classList.remove('hidden');
   $('forgotButton').classList.add('hidden');
   $('authSwitch').classList.add('hidden');
-
   clearAuthMessage();
 }
 
@@ -412,51 +395,33 @@ async function submitAuth(){
   const email=$('emailInput').value.trim();
   const password=$('passwordInput').value;
   const button=$('authSubmit');
-
   if(button.disabled)return;
-
   button.disabled=true;
 
   try{
-    // ВІДНОВЛЕННЯ ПАРОЛЯ: НАДСИЛАННЯ ЛИСТА
     if(forgotMode){
       if(!email){
         authMessage('Введи свою електронну пошту.');
         return;
       }
-
-      const {error}=await db.auth.resetPasswordForEmail(email,{
-        redirectTo:APP_URL
-      });
-
+      const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});
       if(error)throw error;
-
       authMessage('Якщо для цієї адреси існує акаунт, ми надіслали лист із посиланням для відновлення пароля. Перевір пошту та папку «Спам».');
       return;
     }
 
-    // ВСТАНОВЛЕННЯ НОВОГО ПАРОЛЯ
     if(recoveryMode){
       const confirmPassword=$('confirmPasswordInput').value;
-
       if(password.length<6){
         authMessage('Новий пароль має містити щонайменше 6 символів.');
         return;
       }
-
       if(password!==confirmPassword){
         authMessage('Паролі не збігаються. Перевір їх ще раз.');
         return;
       }
-
-      const {data,error}=await db.auth.updateUser({
-        password:password
-      });
-
+      const {data,error}=await db.auth.updateUser({password:password});
       if(error)throw error;
-
-      authMessage('Пароль успішно змінено! Зараз відкриємо твій акаунт.');
-
       if(data.user){
         await loadProfile(data.user);
       }else{
@@ -466,12 +431,10 @@ async function submitAuth(){
       return;
     }
 
-    // ЗВИЧАЙНИЙ ВХІД І РЕЄСТРАЦІЯ
     if(!email||!password){
       authMessage('Введи email і пароль.');
       return;
     }
-
     if(password.length<6){
       authMessage('Пароль має містити щонайменше 6 символів.');
       return;
@@ -480,43 +443,29 @@ async function submitAuth(){
     if(registering){
       const name=$('nameInput').value.trim();
       const username=$('usernameInput').value.trim().replace(/^@/,'').toLowerCase();
-
       if(!name||!username){
         authMessage("Заповни ім'я та логін.");
         return;
       }
-
       if(!/^[a-z0-9_]{3,24}$/.test(username)){
         authMessage('Логін: 3–24 символи, латинські літери, цифри та _.');
         return;
       }
-
       const {data,error}=await db.auth.signUp({
         email,password,
-        options:{
-          data:{
-            display_name:name,
-            username:username
-          }
-        }
+        options:{data:{display_name:name,username:username}}
       });
-
       if(error)throw error;
-
       if(data.session){
         await loadProfile(data.user);
       }else{
         authMessage('Акаунт створено! Перевір пошту та підтверди email, якщо підтвердження увімкнене.');
       }
     }else{
-      const {data,error}=await db.auth.signInWithPassword({
-        email,password
-      });
-
+      const {data,error}=await db.auth.signInWithPassword({email,password});
       if(error)throw error;
       await loadProfile(data.user);
     }
-
   }catch(error){
     authMessage('Помилка: '+error.message);
   }finally{
@@ -526,7 +475,6 @@ async function submitAuth(){
 
 async function loadProfile(user){
   currentUser=user;
-
   const {data,error}=await db.from('profiles')
     .select('id,display_name,username,avatar_url,role,xp,level')
     .eq('id',user.id).single();
@@ -539,7 +487,6 @@ async function loadProfile(user){
   currentProfile=data;
   $('authScreen').classList.add('hidden');
   $('appScreen').classList.remove('hidden');
-
   $('profileName').textContent=data.display_name||'Користувач';
   $('profileUsername').textContent=data.username?'@'+data.username:'';
   $('newName').value=data.display_name||'';
@@ -549,51 +496,146 @@ async function loadProfile(user){
     data.role==='admin'?'🛡️ Адміністратор':'Користувач';
 
   const progress='Рівень: '+(data.level||1)+' · XP: '+(data.xp||0);
-
   $('profileProgress').textContent=progress;
   $('homeLevel').textContent=progress;
   $('topUser').textContent=data.display_name||'Користувач';
   $('settingsEmail').textContent=user.email||'';
 
+  renderAvatar(data.avatar_url);
+
+  $('adminNav').classList.toggle('hidden',!['owner','admin'].includes(data.role));
+  $('removeAvatarButton').classList.toggle('hidden',!data.avatar_url);
+  $('avatarStatus').textContent='JPG, PNG або WEBP. Максимум 5 МБ.';
+  go('home',document.querySelector('[data-page=home]'));
+}
+
+function renderAvatar(url){
   const avatar=$('avatarView');
   avatar.replaceChildren();
 
-  if(data.avatar_url&&data.avatar_url.startsWith('https://')){
+  if(url&&url.startsWith('https://')){
     const img=document.createElement('img');
-    img.src=data.avatar_url;
+    img.src=url;
     img.alt='Аватар';
+    img.onerror=()=>{avatar.textContent='😎';};
     avatar.appendChild(img);
   }else{
-    avatar.textContent=data.avatar_url||'😎';
+    avatar.textContent='😎';
   }
+}
 
-  $('adminNav').classList.toggle(
-    'hidden',
-    !['owner','admin'].includes(data.role)
-  );
+function chooseAvatar(){
+  if(!currentUser){
+    alert('Спочатку увійди в акаунт.');
+    return;
+  }
+  $('avatarFile').click();
+}
 
-  go('home',document.querySelector('[data-page=home]'));
+async function uploadAvatar(event){
+  const file=event.target.files[0];
+  if(!file)return;
+
+  const button=$('avatarButton');
+  const status=$('avatarStatus');
+
+  try{
+    if(!currentUser)throw new Error('Потрібно увійти в акаунт.');
+
+    const allowedTypes=['image/jpeg','image/png','image/webp'];
+    if(!allowedTypes.includes(file.type)){
+      throw new Error('Обери зображення JPG, PNG або WEBP.');
+    }
+
+    if(file.size>5*1024*1024){
+      throw new Error('Фото завелике. Максимальний розмір — 5 МБ.');
+    }
+
+    button.disabled=true;
+    status.textContent='Завантажуємо фотографію...';
+
+    const extension={
+      'image/jpeg':'jpg',
+      'image/png':'png',
+      'image/webp':'webp'
+    }[file.type];
+
+    const filePath=currentUser.id+'/avatar-'+Date.now()+'.'+extension;
+
+    const {error:uploadError}=await db.storage
+      .from('avatars')
+      .upload(filePath,file,{
+        cacheControl:'3600',
+        upsert:false,
+        contentType:file.type
+      });
+
+    if(uploadError)throw uploadError;
+
+    const {data:publicData}=db.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
+
+    const avatarUrl=publicData.publicUrl;
+
+    const {error:updateError}=await db.from('profiles')
+      .update({avatar_url:avatarUrl})
+      .eq('id',currentUser.id);
+
+    if(updateError)throw updateError;
+
+    currentProfile.avatar_url=avatarUrl;
+    renderAvatar(avatarUrl);
+    $('removeAvatarButton').classList.remove('hidden');
+    status.textContent='✅ Фотографію успішно оновлено!';
+  }catch(error){
+    status.textContent='Помилка: '+error.message;
+  }finally{
+    button.disabled=false;
+    event.target.value='';
+  }
+}
+
+async function removeAvatar(){
+  if(!currentUser||!currentProfile?.avatar_url)return;
+
+  if(!confirm('Точно хочеш видалити свою фотографію?'))return;
+
+  const button=$('removeAvatarButton');
+  button.disabled=true;
+
+  try{
+    const {error}=await db.from('profiles')
+      .update({avatar_url:null})
+      .eq('id',currentUser.id);
+
+    if(error)throw error;
+
+    currentProfile.avatar_url=null;
+    renderAvatar(null);
+    button.classList.add('hidden');
+    $('avatarStatus').textContent='Фотографію видалено з профілю.';
+  }catch(error){
+    $('avatarStatus').textContent='Помилка: '+error.message;
+  }finally{
+    button.disabled=false;
+  }
 }
 
 async function saveProfile(){
   if(!currentUser)return;
-
   const name=$('newName').value.trim();
-
   if(!name){
     alert("Ім'я не може бути порожнім.");
     return;
   }
-
   const {error}=await db.from('profiles')
     .update({display_name:name})
     .eq('id',currentUser.id);
-
   if(error){
     alert('Помилка збереження: '+error.message);
     return;
   }
-
   await loadProfile(currentUser);
   alert('Ім’я збережено!');
 }
@@ -601,9 +643,7 @@ async function saveProfile(){
 function go(page,button){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   $('page-'+page).classList.add('active');
-
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-
   if(button)button.classList.add('active');
 
   const titles={
@@ -615,21 +655,17 @@ function go(page,button){
     admin:'Адмінпанель',
     settings:'Налаштування'
   };
-
   $('pageTitle').textContent=titles[page]||'Потужний Мен';
 }
 
 async function logout(){
   const {error}=await db.auth.signOut();
-
   if(error){
     alert('Не вдалося вийти: '+error.message);
     return;
   }
-
   currentUser=null;
   currentProfile=null;
-
   $('appScreen').classList.add('hidden');
   $('authScreen').classList.remove('hidden');
   showLoginMode();
@@ -637,28 +673,22 @@ async function logout(){
 
 async function startApp(){
   const {data,error}=await db.auth.getSession();
-
   if(error){
     authMessage('Помилка авторизації: '+error.message);
     return;
   }
-
   if(data.session){
     await loadProfile(data.session.user);
   }
-
-  // Якщо користувач повернувся за посиланням відновлення
   if(window.location.hash.includes('type=recovery')){
     showRecoveryMode();
   }
 }
 
-// Supabase повідомляє, коли користувач переходить за посиланням відновлення
 db.auth.onAuthStateChange((event,session)=>{
   if(event==='PASSWORD_RECOVERY'){
     showRecoveryMode();
   }
-
   if(event==='SIGNED_OUT'){
     currentUser=null;
     currentProfile=null;
