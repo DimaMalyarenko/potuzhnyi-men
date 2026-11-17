@@ -4,239 +4,462 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Потужний Мен</title>
+<title>Потужний Мен 2.0</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+:root {
+  --bg:#0b110e;
+  --panel:#141e18;
+  --panel2:#1b2920;
+  --green:#25c76a;
+  --green2:#168b49;
+  --text:#f1fff5;
+  --muted:#91a99a;
+  --border:#263a2d;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#eff8f0;color:#194b2b}
-header{display:flex;align-items:center;justify-content:space-between;padding:17px;background:#d9efdc}
-h1{font-size:22px;margin:0}
-main{max-width:520px;margin:auto;padding:18px}
-button{border:0;border-radius:13px;padding:14px;background:#2e9850;color:white;font-size:15px;font-weight:bold;cursor:pointer}
-button:active{opacity:.8}
-.profile-btn{background:white;color:#246b37;padding:11px}
-.card{background:white;border-radius:18px;padding:18px;margin:14px 0}
-h2{font-size:21px;margin:5px 0 14px}
-h3{margin:5px 0 12px}
-p{line-height:1.5}
-.menu{display:grid;gap:11px}
-.menu button{text-align:left;width:100%;background:white;color:#246b37;border:1px solid #d8eadb}
-.menu button span{font-size:20px;margin-right:10px}
-.bot-button{width:100%;background:#238c49;line-height:1.4}
-.screen{display:none}
-.screen.active{display:block}
-input{width:100%;padding:14px;margin:7px 0 14px;border:1px solid #c6ddca;border-radius:11px;font-size:16px}
-label{font-size:14px;font-weight:bold}
-.back{background:#dcefe0;color:#246b37;margin-bottom:12px}
-.small{font-size:12px;color:#718477}
-.avatar-list{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
-.avatar-choice{font-size:25px;background:#e6f4e8;color:#194b2b;padding:10px;border:2px solid transparent}
-.avatar-choice.selected{border-color:#238c49}
-.avatar{font-size:45px}
-.photo{width:85px;height:85px;border-radius:50%;object-fit:cover}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;min-height:100vh
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:245px;background:#101913;border-right:1px solid var(--border);
+  padding:24px 16px;display:flex;flex-direction:column;gap:22px;
+  flex-shrink:0
+}
+.brand{font-size:22px;font-weight:800;color:var(--green);padding:4px}
+.brand small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.nav{display:grid;gap:8px}
+.nav button{
+  background:transparent;color:var(--muted);border:0;
+  padding:13px;border-radius:12px;text-align:left
+}
+.nav button:hover,.nav button.active{
+  background:#1b3022;color:#fff
+}
+.nav button.active{box-shadow:inset 3px 0 var(--green)}
+.side-bottom{margin-top:auto}
+.main{flex:1;min-width:0;padding:28px}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;margin-bottom:28px
+}
+.topbar h1{font-size:25px;margin:0}
+.user-chip{
+  background:var(--panel);border:1px solid var(--border);
+  padding:10px 14px;border-radius:30px;color:var(--muted)
+}
+.content{max-width:1100px;margin:auto}
+.hero{
+  background:linear-gradient(120deg,#174b2c,#12291b);
+  border:1px solid #28633d;border-radius:22px;
+  padding:30px;margin-bottom:20px
+}
+.hero h2{font-size:30px;margin:0 0 10px}
+.hero p{color:#d0e9d8;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:18px;padding:21px
+}
+.card h3{margin:0 0 10px}
+.card p{color:var(--muted);line-height:1.5}
+.action{
+  background:var(--green2);color:white;border:0;
+  border-radius:11px;padding:12px 17px;font-weight:bold
+}
+.action:hover{background:var(--green);color:#06200f}
+.secondary{
+  background:var(--panel2);color:var(--text);
+  border:1px solid var(--border);border-radius:11px;padding:12px 17px
+}
+.danger{background:#8c3030;color:white;border:0;border-radius:11px;padding:12px}
+input{
+  width:100%;padding:13px;border-radius:10px;
+  background:#0d1711;border:1px solid var(--border);
+  color:white;margin:7px 0 13px;outline:none
+}
+input:focus{border-color:var(--green)}
+label{font-size:13px;color:var(--muted)}
+.auth-wrap{
+  min-height:100vh;display:grid;place-items:center;padding:20px
+}
+.auth-card{
+  width:100%;max-width:430px;background:var(--panel);
+  border:1px solid var(--border);padding:28px;border-radius:22px
+}
+.auth-card h1{color:var(--green);margin-top:0}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.avatar{
+  width:90px;height:90px;border-radius:50%;
+  display:grid;place-items:center;background:#203b29;
+  font-size:44px;margin-bottom:15px;overflow:hidden
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.stat{font-size:27px;color:var(--green);font-weight:bold}
+.notice{
+  padding:12px;border-radius:10px;background:#18271d;
+  color:#c5e8d0;margin:12px 0;white-space:pre-wrap
+}
+.page{display:none}
+.page.active{display:block}
+.footer-note{font-size:12px;color:var(--muted);margin-top:20px}
+@media(max-width:760px){
+  .layout{display:block}
+  .sidebar{width:100%;padding:13px;gap:10px;border-right:0;border-bottom:1px solid var(--border)}
+  .brand{font-size:19px}
+  .nav{display:flex;overflow-x:auto;gap:5px}
+  .nav button{white-space:nowrap;padding:11px}
+  .side-bottom{display:none}
+  .main{padding:18px 13px}
+  .topbar h1{font-size:21px}
+  .grid{grid-template-columns:1fr}
+  .hero{padding:23px}
+  .hero h2{font-size:25px}
+}
 </style>
 </head>
 <body>
-<header>
-<h1>💚 Потужний Мен</h1>
-<button id="profileButton" class="profile-btn" style="display:none" onclick="show('profile')">👤 Профіль</button>
-</header>
 
-<main>
-<section id="register" class="screen">
-<div class="card">
-<h2>Ласкаво просимо! 👋</h2>
-<p>Створи акаунт у Потужному Мені.</p>
+<div id="authScreen" class="auth-wrap">
+  <div class="auth-card">
+    <h1>💚 Потужний Мен</h1>
+    <p class="muted">Твоя платформа. Твої можливості.</p>
+    <div id="authNotice" class="notice hidden"></div>
+    <h2 id="authTitle">Вхід до акаунта</h2>
 
-<form onsubmit="register(event)">
-<label>Ім'я профілю</label>
-<input id="name" placeholder="Як тебе називати?" required>
+    <div id="registerFields" class="hidden">
+      <label for="nameInput">Ім'я</label>
+      <input id="nameInput" placeholder="Як тебе звати?">
+      <label for="usernameInput">Унікальний логін</label>
+      <input id="usernameInput" placeholder="Наприклад, potuzhnyi">
+    </div>
 
-<label>Унікальний логін</label>
-<input id="login" placeholder="Наприклад, potuzhnyi123" required>
+    <label for="emailInput">Email</label>
+    <input id="emailInput" type="email" placeholder="name@example.com">
+    <label for="passwordInput">Пароль</label>
+    <input id="passwordInput" type="password" placeholder="Твій пароль">
 
-<label>Пароль</label>
-<input id="password" type="password" placeholder="Від 8 символів" minlength="8" required>
-
-<label>Обери аватар</label>
-<div class="avatar-list">
-<button type="button" class="avatar-choice selected" onclick="chooseAvatar(this,'😎')">😎</button>
-<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🚀')">🚀</button>
-<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🐱')">🐱</button>
-<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🦊')">🦊</button>
-<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'🤖')">🤖</button>
-<button type="button" class="avatar-choice" onclick="chooseAvatar(this,'💚')">💚</button>
+    <button class="action" style="width:100%" id="authSubmit" onclick="submitAuth()">Увійти</button>
+    <button class="secondary" style="width:100%;margin-top:9px" id="authSwitch" onclick="toggleAuth()">Створити акаунт</button>
+    <p class="footer-note">Вхід і реєстрація захищені Supabase Auth.</p>
+  </div>
 </div>
 
-<label>Або завантаж власне фото</label>
-<input type="file" id="photo" accept="image/*">
+<div id="appScreen" class="layout hidden">
+  <aside class="sidebar">
+    <div class="brand">💚 ПОТУЖНИЙ МЕН
+      <small>VERSION 2.0</small>
+    </div>
+    <nav class="nav">
+      <button class="active" data-page="home" onclick="go('home',this)">⌂ Головна</button>
+      <button data-page="profile" onclick="go('profile',this)">👤 Профіль</button>
+      <button data-page="messages" onclick="go('messages',this)">✉️ Повідомлення</button>
+      <button data-page="communities" onclick="go('communities',this)">👥 Спільноти</button>
+      <button data-page="chess" onclick="go('chess',this)">♟️ Шахи онлайн</button>
+      <button data-page="admin" id="adminNav" class="hidden" onclick="go('admin',this)">🛡️ Адмінпанель</button>
+      <button data-page="settings" onclick="go('settings',this)">⚙️ Налаштування</button>
+    </nav>
+    <div class="side-bottom muted">Потужний Мен © 2026</div>
+  </aside>
 
-<button type="submit" style="width:100%">Створити акаунт</button>
-</form>
+  <main class="main">
+    <div class="topbar">
+      <h1 id="pageTitle">Головна</h1>
+      <div class="user-chip" id="topUser">Користувач</div>
+    </div>
 
-<p class="small">Демонстраційна реєстрація для цього браузера. Захищену авторизацію підключимо пізніше.</p>
+    <div class="content">
+      <section class="page active" id="page-home">
+        <div class="hero">
+          <h2>Вітаємо у Потужному Мені! 🚀</h2>
+          <p>Місце для спілкування, нових знайомств, спільнот та цікавих ігор.</p>
+          <button class="action" onclick="go('profile',document.querySelector('[data-page=profile]'))">Мій профіль</button>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>♟️ Шахи онлайн</h3>
+            <p>Готуються матчі з друзями та випадковими суперниками.</p>
+            <button class="secondary" onclick="go('chess',document.querySelector('[data-page=chess]'))">Відкрити шахи</button>
+          </div>
+          <div class="card">
+            <h3>👥 Спільноти</h3>
+            <p>Тут з'являться тематичні спільноти та обговорення.</p>
+            <button class="secondary" onclick="go('communities',document.querySelector('[data-page=communities]'))">До спільнот</button>
+          </div>
+          <div class="card">
+            <h3>✉️ Повідомлення</h3>
+            <p>Особисте спілкування між користувачами платформи.</p>
+            <button class="secondary" onclick="go('messages',document.querySelector('[data-page=messages]'))">Відкрити</button>
+          </div>
+          <div class="card">
+            <h3>📈 Мій прогрес</h3>
+            <p id="homeLevel">Рівень: 1 · XP: 0</p>
+            <div class="stat">💚</div>
+            <p>Розвивай свій профіль!</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-profile">
+        <div class="card">
+          <h2>Мій профіль</h2>
+          <div class="avatar" id="avatarView">😎</div>
+          <h3 id="profileName">Користувач</h3>
+          <p class="muted" id="profileUsername">@username</p>
+          <p id="profileRole" style="color:var(--green);font-weight:bold"></p>
+          <p id="profileProgress">Рівень: 1 · XP: 0</p>
+          <hr style="border-color:var(--border);margin:22px 0">
+          <label for="newName">Змінити ім'я</label>
+          <input id="newName" placeholder="Нове ім'я">
+          <button class="action" onclick="saveProfile()">Зберегти ім'я</button>
+          <p class="footer-note">Зміни зберігаються у твоєму профілі.</p>
+        </div>
+      </section>
+
+      <section class="page" id="page-messages">
+        <div class="card">
+          <h2>✉️ Повідомлення</h2>
+          <p>Особисті чати будуть підключені на наступному етапі.</p>
+          <div class="notice">Розділ підготовлений. Повідомлення поки не надсилаються.</div>
+        </div>
+      </section>
+
+      <section class="page" id="page-communities">
+        <div class="card">
+          <h2>👥 Спільноти</h2>
+          <p>Тут будуть групи за інтересами, публікації та учасники.</p>
+          <div class="notice">Розділ підготовлений. Спільноти поки не створюються.</div>
+        </div>
+      </section>
+
+      <section class="page" id="page-chess">
+        <div class="hero">
+          <h2>♟️ Шахи онлайн</h2>
+          <p>Змагайся з друзями або знаходь випадкових суперників!</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>🤝 Гра з другом</h3>
+            <p>Створення кімнат і запрошення за кодом.</p>
+          </div>
+          <div class="card">
+            <h3>🌐 Випадковий суперник</h3>
+            <p>Пошук іншого гравця онлайн.</p>
+          </div>
+        </div>
+        <div class="notice">Шаховий сервер і синхронізацію ходів підключимо окремо. Поки матчі недоступні.</div>
+      </section>
+
+      <section class="page" id="page-admin">
+        <div class="card">
+          <h2>🛡️ Адмінпанель</h2>
+          <p>Твоя роль дозволяє бачити цей розділ.</p>
+          <div class="notice">Керування користувачами та адміністративні дії підключимо через захищені серверні функції.</div>
+        </div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="card">
+          <h2>⚙️ Налаштування</h2>
+          <p>Акаунт: <span id="settingsEmail"></span></p>
+          <button class="danger" onclick="logout()">Вийти з акаунта</button>
+        </div>
+      </section>
+    </div>
+  </main>
 </div>
-</section>
-
-<section id="home" class="screen">
-<div class="card">
-<h2 id="welcome">Привіт! 👋</h2>
-<p>Бажаєш щось дізнатися?</p>
-<p class="small">Ласкаво просимо у світ Потужного Мена!</p>
-</div>
-
-<h2>✨ Функції бота</h2>
-<div class="card">
-<button class="bot-button" onclick="openBot()">
-✨ Надіслати повідомлення потужному за зірки ✨📩
-</button>
-</div>
-
-<h2>Основні функції</h2>
-<div class="menu">
-<button onclick="show('messages')"><span>💬</span>Повідомлення</button>
-<button onclick="show('communities')"><span>👥</span>Спільноти</button>
-<button onclick="show('settings')"><span>⚙️</span>Налаштування</button>
-</div>
-</section>
-
-<section id="profile" class="screen">
-<button class="back" onclick="show('home')">← Назад</button>
-<div class="card">
-<h2>👤 Мій профіль</h2>
-<div id="profileAvatar" class="avatar">😎</div>
-<h3 id="profileName">Користувач</h3>
-<p id="profileLogin"></p>
-<p>⭐ Рівень: Новачок</p>
-<p>✨ Досвід: 0 XP</p>
-</div>
-</section>
-
-<section id="messages" class="screen">
-<button class="back" onclick="show('home')">← Назад</button>
-<div class="card">
-<h2>💬 Повідомлення</h2>
-<p>Тут будуть твої особисті чати.</p>
-<p class="small">Функція ще розробляється.</p>
-</div>
-</section>
-
-<section id="communities" class="screen">
-<button class="back" onclick="show('home')">← Назад</button>
-<div class="card">
-<h2>👥 Спільноти</h2>
-<p>Тут будуть твої спільноти.</p>
-<p class="small">Створення та пошук спільнот додамо пізніше.</p>
-</div>
-</section>
-
-<section id="settings" class="screen">
-<button class="back" onclick="show('home')">← Назад</button>
-<div class="card">
-<h2>⚙️ Налаштування</h2>
-<p>Налаштування акаунта з'являться тут.</p>
-<button onclick="logout()">Вийти з акаунта</button>
-</div>
-</section>
-</main>
 
 <script>
-let selectedAvatar='😎';
-let photoData='';
+const SUPABASE_URL = 'https://lupqgkhhwlxzyneueyxe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_QlgXUa7U6SiePbj4TByxYA_0ptHhDr4';
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-function chooseAvatar(button,emoji){
- selectedAvatar=emoji;
- photoData='';
- document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));
- button.classList.add('selected');
- document.getElementById('photo').value='';
+let registering = false;
+let currentUser = null;
+let currentProfile = null;
+
+const $ = id => document.getElementById(id);
+
+function authMessage(text){
+  $('authNotice').textContent=text;
+  $('authNotice').classList.remove('hidden');
 }
 
-document.getElementById('photo').addEventListener('change',function(){
- const file=this.files[0];
- if(!file)return;
- if(file.size>1000000){
-  alert('Фото має бути менше 1 МБ.');
-  this.value='';
-  return;
- }
- const reader=new FileReader();
- reader.onload=()=>{
-  photoData=reader.result;
-  selectedAvatar='';
-  document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));
- };
- reader.readAsDataURL(file);
+function toggleAuth(){
+  registering=!registering;
+  $('authTitle').textContent=registering?'Створення акаунта':'Вхід до акаунта';
+  $('authSubmit').textContent=registering?'Зареєструватися':'Увійти';
+  $('authSwitch').textContent=registering?'У мене вже є акаунт':'Створити акаунт';
+  $('registerFields').classList.toggle('hidden',!registering);
+  $('authNotice').classList.add('hidden');
+}
+
+async function submitAuth(){
+  const email=$('emailInput').value.trim();
+  const password=$('passwordInput').value;
+  const button=$('authSubmit');
+
+  if(!email||!password){
+    authMessage('Введи email і пароль.');
+    return;
+  }
+  if(password.length<6){
+    authMessage('Пароль має містити щонайменше 6 символів.');
+    return;
+  }
+
+  button.disabled=true;
+  try{
+    if(registering){
+      const name=$('nameInput').value.trim();
+      const username=$('usernameInput').value.trim().replace(/^@/,'').toLowerCase();
+
+      if(!name||!username){
+        authMessage("Заповни ім'я та логін.");
+        return;
+      }
+      if(!/^[a-z0-9_]{3,24}$/.test(username)){
+        authMessage('Логін: 3–24 символи, латинські літери, цифри та _.');
+        return;
+      }
+
+      const {data,error}=await db.auth.signUp({
+        email,password,
+        options:{data:{display_name:name,username}}
+      });
+      if(error)throw error;
+
+      if(data.session){
+        await loadProfile(data.user);
+      }else{
+        authMessage('Акаунт створено! Перевір пошту та підтверди email, якщо підтвердження увімкнене.');
+      }
+    }else{
+      const {data,error}=await db.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      await loadProfile(data.user);
+    }
+  }catch(error){
+    authMessage('Помилка: '+error.message);
+  }finally{
+    button.disabled=false;
+  }
+}
+
+async function loadProfile(user){
+  currentUser=user;
+  const {data,error}=await db.from('profiles')
+    .select('id,display_name,username,avatar_url,role,xp,level')
+    .eq('id',user.id).single();
+
+  if(error){
+    authMessage('Не вдалося завантажити профіль: '+error.message);
+    return;
+  }
+
+  currentProfile=data;
+  $('authScreen').classList.add('hidden');
+  $('appScreen').classList.remove('hidden');
+
+  $('profileName').textContent=data.display_name||'Користувач';
+  $('profileUsername').textContent=data.username?'@'+data.username:'';
+  $('newName').value=data.display_name||'';
+  $('profileRole').textContent=
+    data.role==='owner'?'👑 Власник':
+    data.role==='admin'?'🛡️ Адміністратор':'Користувач';
+
+  const progress='Рівень: '+(data.level||1)+' · XP: '+(data.xp||0);
+  $('profileProgress').textContent=progress;
+  $('homeLevel').textContent=progress;
+  $('topUser').textContent=data.display_name||'Користувач';
+  $('settingsEmail').textContent=user.email||'';
+
+  const avatar=$('avatarView');
+  avatar.replaceChildren();
+  if(data.avatar_url&&data.avatar_url.startsWith('https://')){
+    const img=document.createElement('img');
+    img.src=data.avatar_url;
+    img.alt='Аватар';
+    avatar.appendChild(img);
+  }else{
+    avatar.textContent=data.avatar_url||'😎';
+  }
+
+  $('adminNav').classList.toggle('hidden',!['owner','admin'].includes(data.role));
+  go('home',document.querySelector('[data-page=home]'));
+}
+
+async function saveProfile(){
+  if(!currentUser)return;
+  const name=$('newName').value.trim();
+  if(!name){
+    alert("Ім'я не може бути порожнім.");
+    return;
+  }
+
+  const {error}=await db.from('profiles')
+    .update({display_name:name})
+    .eq('id',currentUser.id);
+
+  if(error){
+    alert('Помилка збереження: '+error.message);
+    return;
+  }
+  await loadProfile(currentUser);
+  alert('Ім’я збережено!');
+}
+
+function go(page,button){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  $('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  if(button)button.classList.add('active');
+
+  const titles={
+    home:'Головна',profile:'Мій профіль',messages:'Повідомлення',
+    communities:'Спільноти',chess:'Шахи онлайн',
+    admin:'Адмінпанель',settings:'Налаштування'
+  };
+  $('pageTitle').textContent=titles[page]||'Потужний Мен';
+}
+
+async function logout(){
+  const {error}=await db.auth.signOut();
+  if(error){
+    alert('Не вдалося вийти: '+error.message);
+    return;
+  }
+  currentUser=null;
+  currentProfile=null;
+  $('appScreen').classList.add('hidden');
+  $('authScreen').classList.remove('hidden');
+}
+
+async function startApp(){
+  const {data,error}=await db.auth.getSession();
+  if(error){
+    authMessage('Помилка авторизації: '+error.message);
+    return;
+  }
+  if(data.session){
+    await loadProfile(data.session.user);
+  }
+}
+
+db.auth.onAuthStateChange((event,session)=>{
+  if(event==='SIGNED_OUT'){
+    currentUser=null;
+    $('appScreen').classList.add('hidden');
+    $('authScreen').classList.remove('hidden');
+  }
 });
 
-function show(id){
- document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
- document.getElementById(id).classList.add('active');
-
- const profileButton=document.getElementById('profileButton');
- profileButton.style.display=id==='register'?'none':'block';
-}
-
-function register(event){
- event.preventDefault();
-
- const name=document.getElementById('name').value.trim();
- const login=document.getElementById('login').value.trim();
- const password=document.getElementById('password').value;
-
- if(!name||!login||password.length<8){
-  alert('Перевір заповнення полів. Пароль має бути не коротшим за 8 символів.');
-  return;
- }
-
- const user={
-  name,
-  login,
-  avatar:photoData||selectedAvatar
- };
-
- try{
-  localStorage.setItem('potuzhnyi_demo_profile',JSON.stringify(user));
- }catch(e){
-  alert('Не вдалося зберегти профіль. Спробуй інше фото.');
-  return;
- }
-
- document.getElementById('password').value='';
- loadProfile();
- show('home');
-}
-
-function loadProfile(){
- const user=JSON.parse(localStorage.getItem('potuzhnyi_demo_profile')||'null');
- if(!user)return false;
-
- document.getElementById('profileName').textContent=user.name;
- document.getElementById('profileLogin').textContent='@'+user.login;
- document.getElementById('welcome').textContent='Привіт, '+user.name+'! 👋';
-
- const avatar=document.getElementById('profileAvatar');
- if(user.avatar.startsWith('data:image')){
-  avatar.innerHTML='<img class="photo" src="'+user.avatar+'" alt="Аватар">';
- }else{
-  avatar.textContent=user.avatar;
- }
- return true;
-}
-
-function logout(){
- localStorage.removeItem('potuzhnyi_demo_profile');
- show('register');
-}
-
-function openBot(){
- window.open('https://t.me/Halabuda_PotugnogoMena?direct','_blank');
-}
-
-if(loadProfile()){
- show('home');
-}else{
- show('register');
-}
+startApp();
 </script>
 </body>
 </html>
