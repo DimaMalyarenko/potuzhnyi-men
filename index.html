@@ -8,117 +8,65 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
-  --bg:#0b110e;
-  --panel:#141e18;
-  --panel2:#1b2920;
-  --green:#25c76a;
-  --green2:#168b49;
-  --text:#f1fff5;
-  --muted:#91a99a;
-  --border:#263a2d;
+  --bg:#0b110e;--panel:#141e18;--panel2:#1b2920;
+  --green:#25c76a;--green2:#168b49;--text:#f1fff5;
+  --muted:#91a99a;--border:#263a2d;
 }
 *{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;min-height:100vh
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
 button,input{font:inherit}
 button{cursor:pointer}
 .layout{display:flex;min-height:100vh}
-.sidebar{
-  width:245px;background:#101913;border-right:1px solid var(--border);
-  padding:24px 16px;display:flex;flex-direction:column;gap:22px;
-  flex-shrink:0
-}
+.sidebar{width:245px;background:#101913;border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;gap:22px;flex-shrink:0}
 .brand{font-size:22px;font-weight:800;color:var(--green);padding:4px}
 .brand small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
 .nav{display:grid;gap:8px}
-.nav button{
-  background:transparent;color:var(--muted);border:0;
-  padding:13px;border-radius:12px;text-align:left
-}
-.nav button:hover,.nav button.active{
-  background:#1b3022;color:#fff
-}
+.nav button{background:transparent;color:var(--muted);border:0;padding:13px;border-radius:12px;text-align:left}
+.nav button:hover,.nav button.active{background:#1b3022;color:#fff}
 .nav button.active{box-shadow:inset 3px 0 var(--green)}
 .side-bottom{margin-top:auto}
 .main{flex:1;min-width:0;padding:28px}
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;margin-bottom:28px
-}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
 .topbar h1{font-size:25px;margin:0}
-.user-chip{
-  background:var(--panel);border:1px solid var(--border);
-  padding:10px 14px;border-radius:30px;color:var(--muted)
-}
+.user-chip{background:var(--panel);border:1px solid var(--border);padding:10px 14px;border-radius:30px;color:var(--muted)}
 .content{max-width:1100px;margin:auto}
-.hero{
-  background:linear-gradient(120deg,#174b2c,#12291b);
-  border:1px solid #28633d;border-radius:22px;
-  padding:30px;margin-bottom:20px
-}
+.hero{background:linear-gradient(120deg,#174b2c,#12291b);border:1px solid #28633d;border-radius:22px;padding:30px;margin-bottom:20px}
 .hero h2{font-size:30px;margin:0 0 10px}
 .hero p{color:#d0e9d8;line-height:1.5}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:18px;padding:21px
-}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:21px}
 .card h3{margin:0 0 10px}
 .card p{color:var(--muted);line-height:1.5}
-.action{
-  background:var(--green2);color:white;border:0;
-  border-radius:11px;padding:12px 17px;font-weight:bold
-}
+.action{background:var(--green2);color:white;border:0;border-radius:11px;padding:12px 17px;font-weight:bold}
 .action:hover{background:var(--green);color:#06200f}
 .action:disabled{opacity:.6;cursor:wait}
-.secondary{
-  background:var(--panel2);color:var(--text);
-  border:1px solid var(--border);border-radius:11px;padding:12px 17px
-}
-.danger{background:#8c3030;color:white;border:0;border-radius:11px;padding:12px}
-input{
-  width:100%;padding:13px;border-radius:10px;
-  background:#0d1711;border:1px solid var(--border);
-  color:white;margin:7px 0 13px;outline:none
-}
+.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:11px;padding:12px 17px}
+.danger{background:#8c3030;color:white;border:0;border-radius:11px;padding:12px 17px}
+input{width:100%;padding:13px;border-radius:10px;background:#0d1711;border:1px solid var(--border);color:white;margin:7px 0 13px;outline:none}
 input:focus{border-color:var(--green)}
 label{font-size:13px;color:var(--muted)}
-.auth-wrap{
-  min-height:100vh;display:grid;place-items:center;padding:20px
-}
-.auth-card{
-  width:100%;max-width:430px;background:var(--panel);
-  border:1px solid var(--border);padding:28px;border-radius:22px
-}
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.auth-card{width:100%;max-width:430px;background:var(--panel);border:1px solid var(--border);padding:28px;border-radius:22px}
 .auth-card h1{color:var(--green);margin-top:0}
 .hidden{display:none!important}
 .muted{color:var(--muted)}
-.avatar{
-  width:100px;height:100px;border-radius:50%;
-  display:grid;place-items:center;background:#203b29;
-  font-size:44px;margin-bottom:15px;overflow:hidden;
-  border:2px solid var(--green)
-}
+.avatar{width:100px;height:100px;border-radius:50%;display:grid;place-items:center;background:#203b29;font-size:44px;margin-bottom:15px;overflow:hidden;border:2px solid var(--green)}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .stat{font-size:27px;color:var(--green);font-weight:bold}
-.notice{
-  padding:12px;border-radius:10px;background:#18271d;
-  color:#c5e8d0;margin:12px 0;white-space:pre-wrap;
-  line-height:1.5
-}
+.notice{padding:12px;border-radius:10px;background:#18271d;color:#c5e8d0;margin:12px 0;white-space:pre-wrap;line-height:1.5}
 .page{display:none}
 .page.active{display:block}
 .footer-note{font-size:12px;color:var(--muted);margin-top:20px}
-.text-button{
-  display:block;width:100%;margin-top:13px;
-  background:transparent;border:0;color:var(--green);
-  padding:9px;font-size:14px
-}
+.text-button{display:block;width:100%;margin-top:13px;background:transparent;border:0;color:var(--green);padding:9px;font-size:14px}
 .text-button:hover{text-decoration:underline}
 .avatar-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
 .avatar-status{font-size:13px;color:var(--muted);margin-top:8px}
+.user-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.user-info{min-width:180px;flex:1}
+.user-info strong{display:block;margin-bottom:5px}
+.user-actions{display:flex;gap:8px;flex-wrap:wrap}
+.user-status{font-size:12px;color:var(--muted)}
+.small-button{padding:9px 12px;font-size:13px}
 @media(max-width:760px){
   .layout{display:block}
   .sidebar{width:100%;padding:13px;gap:10px;border-right:0;border-bottom:1px solid var(--border)}
@@ -174,9 +122,7 @@ label{font-size:13px;color:var(--muted)}
 
 <div id="appScreen" class="layout hidden">
   <aside class="sidebar">
-    <div class="brand">💚 ПОТУЖНИЙ МЕН
-      <small>VERSION 2.0</small>
-    </div>
+    <div class="brand">💚 ПОТУЖНИЙ МЕН<small>VERSION 2.0</small></div>
     <nav class="nav">
       <button class="active" data-page="home" onclick="go('home',this)">⌂ Головна</button>
       <button data-page="profile" onclick="go('profile',this)">👤 Профіль</button>
@@ -231,17 +177,16 @@ label{font-size:13px;color:var(--muted)}
         <div class="card">
           <h2>Мій профіль</h2>
           <div class="avatar" id="avatarView">😎</div>
-
           <div class="avatar-actions">
             <button class="action" id="avatarButton" onclick="chooseAvatar()">📸 Змінити фото</button>
             <button class="secondary" id="removeAvatarButton" onclick="removeAvatar()">Видалити фото</button>
           </div>
           <input type="file" id="avatarFile" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="uploadAvatar(event)">
           <div id="avatarStatus" class="avatar-status">JPG, PNG або WEBP. Максимум 5 МБ.</div>
-
           <h3 id="profileName">Користувач</h3>
           <p class="muted" id="profileUsername">@username</p>
           <p id="profileRole" style="color:var(--green);font-weight:bold"></p>
+          <p id="profileTitle" class="muted"></p>
           <p id="profileProgress">Рівень: 1 · XP: 0</p>
           <hr style="border-color:var(--border);margin:22px 0">
           <label for="newName">Змінити ім'я</label>
@@ -273,23 +218,40 @@ label{font-size:13px;color:var(--muted)}
           <p>Змагайся з друзями або знаходь випадкових суперників!</p>
         </div>
         <div class="grid">
-          <div class="card">
-            <h3>🤝 Гра з другом</h3>
-            <p>Створення кімнат і запрошення за кодом.</p>
-          </div>
-          <div class="card">
-            <h3>🌐 Випадковий суперник</h3>
-            <p>Пошук іншого гравця онлайн.</p>
-          </div>
+          <div class="card"><h3>🤝 Гра з другом</h3><p>Створення кімнат і запрошення за кодом.</p></div>
+          <div class="card"><h3>🌐 Випадковий суперник</h3><p>Пошук іншого гравця онлайн.</p></div>
         </div>
         <div class="notice">Шаховий сервер і синхронізацію ходів підключимо окремо. Поки матчі недоступні.</div>
       </section>
 
       <section class="page" id="page-admin">
-        <div class="card">
+        <div class="hero">
           <h2>🛡️ Адмінпанель</h2>
-          <p>Твоя роль дозволяє бачити цей розділ.</p>
-          <div class="notice">Керування користувачами та адміністративні дії підключимо через захищені серверні функції.</div>
+          <p>Центр керування платформою «Потужний Мен 2.0»</p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>👥 Користувачі</h3>
+            <div class="stat" id="adminUserCount">—</div>
+            <p>Зареєстровано на платформі</p>
+            <button class="action" onclick="loadAdminUsers()">🔄 Оновити список</button>
+          </div>
+
+          <div class="card" id="ownerControls">
+            <h3>👑 Налаштування власника</h3>
+            <label for="ownerLevel">Мій рівень</label>
+            <input id="ownerLevel" type="number" min="1" max="1000" placeholder="Наприклад, 10">
+            <label for="ownerTitle">Моє звання</label>
+            <input id="ownerTitle" maxlength="40" placeholder="Наприклад, Засновник">
+            <button class="action" onclick="saveOwnerSettings()">Зберегти зміни</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <h3>📋 Список користувачів</h3>
+          <div id="adminNotice" class="notice">Натисни «Оновити список».</div>
+          <div id="adminUsers"></div>
         </div>
       </section>
 
@@ -311,11 +273,12 @@ const APP_URL = 'https://dimamalyarenko.github.io/potuzhnyi-men/';
 
 const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-let registering = false;
-let forgotMode = false;
-let recoveryMode = false;
-let currentUser = null;
-let currentProfile = null;
+let registering=false;
+let forgotMode=false;
+let recoveryMode=false;
+let currentUser=null;
+let currentProfile=null;
+let adminUsersLoading=false;
 
 const $ = id => document.getElementById(id);
 
@@ -323,16 +286,12 @@ function authMessage(text){
   $('authNotice').textContent=text;
   $('authNotice').classList.remove('hidden');
 }
-
 function clearAuthMessage(){
   $('authNotice').textContent='';
   $('authNotice').classList.add('hidden');
 }
-
 function resetAuthView(){
-  registering=false;
-  forgotMode=false;
-  recoveryMode=false;
+  registering=false;forgotMode=false;recoveryMode=false;
   $('registerFields').classList.add('hidden');
   $('emailGroup').classList.remove('hidden');
   $('passwordGroup').classList.remove('hidden');
@@ -344,10 +303,8 @@ function resetAuthView(){
   $('passwordInput').value='';
   $('confirmPasswordInput').value='';
 }
-
 function toggleAuth(){
-  resetAuthView();
-  registering=true;
+  resetAuthView();registering=true;
   $('authTitle').textContent='Створення акаунта';
   $('authSubmit').textContent='Зареєструватися';
   $('authSwitch').textContent='У мене вже є акаунт';
@@ -355,7 +312,6 @@ function toggleAuth(){
   $('forgotButton').classList.add('hidden');
   clearAuthMessage();
 }
-
 function showLoginMode(){
   resetAuthView();
   $('authTitle').textContent='Вхід до акаунта';
@@ -363,10 +319,8 @@ function showLoginMode(){
   $('authSwitch').textContent='Створити акаунт';
   clearAuthMessage();
 }
-
 function showForgotMode(){
-  resetAuthView();
-  forgotMode=true;
+  resetAuthView();forgotMode=true;
   $('authTitle').textContent='Відновлення пароля';
   $('authSubmit').textContent='Надіслати лист';
   $('authSwitch').textContent='Повернутися до входу';
@@ -375,10 +329,8 @@ function showForgotMode(){
   $('forgotButton').classList.add('hidden');
   clearAuthMessage();
 }
-
 function showRecoveryMode(){
-  resetAuthView();
-  recoveryMode=true;
+  resetAuthView();recoveryMode=true;
   $('authTitle').textContent='Створення нового пароля';
   $('authSubmit').textContent='Зберегти новий пароль';
   $('passwordLabel').textContent='Новий пароль';
@@ -400,10 +352,7 @@ async function submitAuth(){
 
   try{
     if(forgotMode){
-      if(!email){
-        authMessage('Введи свою електронну пошту.');
-        return;
-      }
+      if(!email){authMessage('Введи свою електронну пошту.');return;}
       const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});
       if(error)throw error;
       authMessage('Якщо для цієї адреси існує акаунт, ми надіслали лист із посиланням для відновлення пароля. Перевір пошту та папку «Спам».');
@@ -412,55 +361,31 @@ async function submitAuth(){
 
     if(recoveryMode){
       const confirmPassword=$('confirmPasswordInput').value;
-      if(password.length<6){
-        authMessage('Новий пароль має містити щонайменше 6 символів.');
-        return;
-      }
-      if(password!==confirmPassword){
-        authMessage('Паролі не збігаються. Перевір їх ще раз.');
-        return;
-      }
-      const {data,error}=await db.auth.updateUser({password:password});
+      if(password.length<6){authMessage('Новий пароль має містити щонайменше 6 символів.');return;}
+      if(password!==confirmPassword){authMessage('Паролі не збігаються. Перевір їх ще раз.');return;}
+      const {data,error}=await db.auth.updateUser({password});
       if(error)throw error;
-      if(data.user){
-        await loadProfile(data.user);
-      }else{
-        showLoginMode();
-        authMessage('Пароль змінено. Тепер увійди з новим паролем.');
-      }
+      if(data.user)await loadProfile(data.user);
+      else{showLoginMode();authMessage('Пароль змінено. Тепер увійди з новим паролем.');}
       return;
     }
 
-    if(!email||!password){
-      authMessage('Введи email і пароль.');
-      return;
-    }
-    if(password.length<6){
-      authMessage('Пароль має містити щонайменше 6 символів.');
-      return;
-    }
+    if(!email||!password){authMessage('Введи email і пароль.');return;}
+    if(password.length<6){authMessage('Пароль має містити щонайменше 6 символів.');return;}
 
     if(registering){
       const name=$('nameInput').value.trim();
       const username=$('usernameInput').value.trim().replace(/^@/,'').toLowerCase();
-      if(!name||!username){
-        authMessage("Заповни ім'я та логін.");
-        return;
-      }
+      if(!name||!username){authMessage("Заповни ім'я та логін.");return;}
       if(!/^[a-z0-9_]{3,24}$/.test(username)){
-        authMessage('Логін: 3–24 символи, латинські літери, цифри та _.');
-        return;
+        authMessage('Логін: 3–24 символи, латинські літери, цифри та _.');return;
       }
       const {data,error}=await db.auth.signUp({
-        email,password,
-        options:{data:{display_name:name,username:username}}
+        email,password,options:{data:{display_name:name,username}}
       });
       if(error)throw error;
-      if(data.session){
-        await loadProfile(data.user);
-      }else{
-        authMessage('Акаунт створено! Перевір пошту та підтверди email, якщо підтвердження увімкнене.');
-      }
+      if(data.session)await loadProfile(data.user);
+      else authMessage('Акаунт створено! Перевір пошту та підтверди email, якщо підтвердження увімкнене.');
     }else{
       const {data,error}=await db.auth.signInWithPassword({email,password});
       if(error)throw error;
@@ -476,11 +401,18 @@ async function submitAuth(){
 async function loadProfile(user){
   currentUser=user;
   const {data,error}=await db.from('profiles')
-    .select('id,display_name,username,avatar_url,role,xp,level')
+    .select('id,display_name,username,avatar_url,role,xp,level,title,is_banned')
     .eq('id',user.id).single();
 
   if(error){
     authMessage('Не вдалося завантажити профіль: '+error.message);
+    return;
+  }
+
+  if(data.is_banned && data.role!=='owner'){
+    await db.auth.signOut();
+    currentUser=null;currentProfile=null;
+    authMessage('Цей акаунт заблоковано. Якщо вважаєш це помилкою, звернися до адміністрації.');
     return;
   }
 
@@ -494,6 +426,7 @@ async function loadProfile(user){
   $('profileRole').textContent=
     data.role==='owner'?'👑 Власник':
     data.role==='admin'?'🛡️ Адміністратор':'Користувач';
+  $('profileTitle').textContent=data.title||'';
 
   const progress='Рівень: '+(data.level||1)+' · XP: '+(data.xp||0);
   $('profileProgress').textContent=progress;
@@ -502,88 +435,55 @@ async function loadProfile(user){
   $('settingsEmail').textContent=user.email||'';
 
   renderAvatar(data.avatar_url);
-
   $('adminNav').classList.toggle('hidden',!['owner','admin'].includes(data.role));
   $('removeAvatarButton').classList.toggle('hidden',!data.avatar_url);
   $('avatarStatus').textContent='JPG, PNG або WEBP. Максимум 5 МБ.';
+
+  $('ownerControls').classList.toggle('hidden',data.role!=='owner');
+  $('ownerLevel').value=data.level||1;
+  $('ownerTitle').value=data.title||'';
+
   go('home',document.querySelector('[data-page=home]'));
 }
 
 function renderAvatar(url){
   const avatar=$('avatarView');
   avatar.replaceChildren();
-
   if(url&&url.startsWith('https://')){
     const img=document.createElement('img');
-    img.src=url;
-    img.alt='Аватар';
+    img.src=url;img.alt='Аватар';
     img.onerror=()=>{avatar.textContent='😎';};
     avatar.appendChild(img);
-  }else{
-    avatar.textContent='😎';
-  }
+  }else avatar.textContent='😎';
 }
 
 function chooseAvatar(){
-  if(!currentUser){
-    alert('Спочатку увійди в акаунт.');
-    return;
-  }
+  if(!currentUser){alert('Спочатку увійди в акаунт.');return;}
   $('avatarFile').click();
 }
 
 async function uploadAvatar(event){
   const file=event.target.files[0];
   if(!file)return;
-
   const button=$('avatarButton');
   const status=$('avatarStatus');
-
   try{
     if(!currentUser)throw new Error('Потрібно увійти в акаунт.');
-
     const allowedTypes=['image/jpeg','image/png','image/webp'];
-    if(!allowedTypes.includes(file.type)){
-      throw new Error('Обери зображення JPG, PNG або WEBP.');
-    }
-
-    if(file.size>5*1024*1024){
-      throw new Error('Фото завелике. Максимальний розмір — 5 МБ.');
-    }
-
+    if(!allowedTypes.includes(file.type))throw new Error('Обери зображення JPG, PNG або WEBP.');
+    if(file.size>5*1024*1024)throw new Error('Фото завелике. Максимальний розмір — 5 МБ.');
     button.disabled=true;
     status.textContent='Завантажуємо фотографію...';
-
-    const extension={
-      'image/jpeg':'jpg',
-      'image/png':'png',
-      'image/webp':'webp'
-    }[file.type];
-
+    const extension={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type];
     const filePath=currentUser.id+'/avatar-'+Date.now()+'.'+extension;
-
-    const {error:uploadError}=await db.storage
-      .from('avatars')
-      .upload(filePath,file,{
-        cacheControl:'3600',
-        upsert:false,
-        contentType:file.type
-      });
-
+    const {error:uploadError}=await db.storage.from('avatars').upload(filePath,file,{
+      cacheControl:'3600',upsert:false,contentType:file.type
+    });
     if(uploadError)throw uploadError;
-
-    const {data:publicData}=db.storage
-      .from('avatars')
-      .getPublicUrl(filePath);
-
+    const {data:publicData}=db.storage.from('avatars').getPublicUrl(filePath);
     const avatarUrl=publicData.publicUrl;
-
-    const {error:updateError}=await db.from('profiles')
-      .update({avatar_url:avatarUrl})
-      .eq('id',currentUser.id);
-
+    const {error:updateError}=await db.from('profiles').update({avatar_url:avatarUrl}).eq('id',currentUser.id);
     if(updateError)throw updateError;
-
     currentProfile.avatar_url=avatarUrl;
     renderAvatar(avatarUrl);
     $('removeAvatarButton').classList.remove('hidden');
@@ -598,46 +498,157 @@ async function uploadAvatar(event){
 
 async function removeAvatar(){
   if(!currentUser||!currentProfile?.avatar_url)return;
-
   if(!confirm('Точно хочеш видалити свою фотографію?'))return;
-
   const button=$('removeAvatarButton');
   button.disabled=true;
-
   try{
-    const {error}=await db.from('profiles')
-      .update({avatar_url:null})
-      .eq('id',currentUser.id);
-
+    const {error}=await db.from('profiles').update({avatar_url:null}).eq('id',currentUser.id);
     if(error)throw error;
-
     currentProfile.avatar_url=null;
     renderAvatar(null);
     button.classList.add('hidden');
     $('avatarStatus').textContent='Фотографію видалено з профілю.';
   }catch(error){
     $('avatarStatus').textContent='Помилка: '+error.message;
-  }finally{
-    button.disabled=false;
-  }
+  }finally{button.disabled=false;}
 }
 
 async function saveProfile(){
   if(!currentUser)return;
   const name=$('newName').value.trim();
-  if(!name){
-    alert("Ім'я не може бути порожнім.");
-    return;
-  }
-  const {error}=await db.from('profiles')
-    .update({display_name:name})
-    .eq('id',currentUser.id);
-  if(error){
-    alert('Помилка збереження: '+error.message);
-    return;
-  }
+  if(!name){alert("Ім'я не може бути порожнім.");return;}
+  const {error}=await db.from('profiles').update({display_name:name}).eq('id',currentUser.id);
+  if(error){alert('Помилка збереження: '+error.message);return;}
   await loadProfile(currentUser);
   alert('Ім’я збережено!');
+}
+
+async function saveOwnerSettings(){
+  if(currentProfile?.role!=='owner'){alert('Ця дія доступна лише власнику.');return;}
+  const level=Number($('ownerLevel').value);
+  const title=$('ownerTitle').value.trim();
+  if(!Number.isInteger(level)||level<1||level>1000){
+    alert('Рівень має бути цілим числом від 1 до 1000.');return;
+  }
+  if(title.length>40){alert('Звання має містити не більше 40 символів.');return;}
+
+  const button=$('ownerControls').querySelector('button');
+  button.disabled=true;
+  try{
+    const {error}=await db.rpc('owner_update_my_title_level',{
+      p_level:level,p_title:title||null
+    });
+    if(error)throw error;
+    await loadProfile(currentUser);
+    alert('✅ Рівень і звання оновлено!');
+  }catch(error){
+    alert('Не вдалося зберегти: '+error.message);
+  }finally{button.disabled=false;}
+}
+
+async function loadAdminUsers(){
+  if(!currentProfile||!['owner','admin'].includes(currentProfile.role)){
+    $('adminNotice').textContent='Немає доступу до адмінпанелі.';
+    return;
+  }
+  if(adminUsersLoading)return;
+  adminUsersLoading=true;
+  $('adminNotice').textContent='Завантажуємо користувачів...';
+  $('adminUsers').replaceChildren();
+
+  try{
+    const {data,error}=await db.rpc('admin_list_users');
+    if(error)throw error;
+    const users=data||[];
+    $('adminUserCount').textContent=users.length;
+    $('adminNotice').textContent=users.length
+      ?'Список користувачів завантажено.'
+      :'Користувачів поки немає.';
+
+    const container=$('adminUsers');
+    users.forEach(user=>{
+      const row=document.createElement('div');
+      row.className='user-row';
+
+      const info=document.createElement('div');
+      info.className='user-info';
+
+      const name=document.createElement('strong');
+      name.textContent=user.display_name||'Без імені';
+
+      const username=document.createElement('div');
+      username.className='user-status';
+      username.textContent=user.username?'@'+user.username:'Без логіна';
+
+      const role=document.createElement('div');
+      role.className='user-status';
+      role.textContent=
+        user.role==='owner'?'👑 Власник':
+        user.role==='admin'?'🛡️ Адміністратор':'Користувач';
+
+      const level=document.createElement('div');
+      level.className='user-status';
+      level.textContent='Рівень '+(user.level||1)+' · XP '+(user.xp||0)+(user.title?' · '+user.title:'');
+
+      const status=document.createElement('div');
+      status.className='user-status';
+      status.textContent=user.is_banned?'🔴 Заблокований':'🟢 Активний';
+
+      info.append(name,username,role,level,status);
+      row.appendChild(info);
+
+      if(currentProfile.role==='owner' && user.role!=='owner' && user.id!==currentUser.id){
+        const actions=document.createElement('div');
+        actions.className='user-actions';
+        const button=document.createElement('button');
+        button.className=user.is_banned?'action small-button':'danger small-button';
+        button.textContent=user.is_banned?'Розблокувати':'Заблокувати';
+        button.addEventListener('click',()=>manageUser(user.id,user.is_banned?'unban':'ban',button));
+        actions.appendChild(button);
+        row.appendChild(actions);
+      }
+
+      container.appendChild(row);
+    });
+  }catch(error){
+    $('adminNotice').textContent='Помилка завантаження: '+error.message;
+  }finally{
+    adminUsersLoading=false;
+  }
+}
+
+async function manageUser(userId,action,button){
+  if(currentProfile?.role!=='owner'){
+    alert('Керувати блокуванням може лише власник.');
+    return;
+  }
+  const question=action==='ban'
+    ?'Заблокувати цього користувача?'
+    :'Розблокувати цього користувача?';
+  if(!confirm(question))return;
+
+  button.disabled=true;
+  try{
+    const {data,error}=await db.functions.invoke('admin-manage-user',{
+      body:{user_id:userId,action}
+    });
+    if(error){
+      let message=error.message;
+      try{
+        if(error.context){
+          const details=await error.context.json();
+          message=details.error||message;
+        }
+      }catch(_){}
+      throw new Error(message);
+    }
+    if(data?.error)throw new Error(data.error);
+    alert(data?.message||'Дію виконано.');
+    await loadAdminUsers();
+  }catch(error){
+    alert('Помилка: '+error.message);
+    button.disabled=false;
+  }
 }
 
 function go(page,button){
@@ -647,25 +658,19 @@ function go(page,button){
   if(button)button.classList.add('active');
 
   const titles={
-    home:'Головна',
-    profile:'Мій профіль',
-    messages:'Повідомлення',
-    communities:'Спільноти',
-    chess:'Шахи онлайн',
-    admin:'Адмінпанель',
+    home:'Головна',profile:'Мій профіль',messages:'Повідомлення',
+    communities:'Спільноти',chess:'Шахи онлайн',admin:'Адмінпанель',
     settings:'Налаштування'
   };
   $('pageTitle').textContent=titles[page]||'Потужний Мен';
+
+  if(page==='admin')loadAdminUsers();
 }
 
 async function logout(){
   const {error}=await db.auth.signOut();
-  if(error){
-    alert('Не вдалося вийти: '+error.message);
-    return;
-  }
-  currentUser=null;
-  currentProfile=null;
+  if(error){alert('Не вдалося вийти: '+error.message);return;}
+  currentUser=null;currentProfile=null;
   $('appScreen').classList.add('hidden');
   $('authScreen').classList.remove('hidden');
   showLoginMode();
@@ -673,25 +678,15 @@ async function logout(){
 
 async function startApp(){
   const {data,error}=await db.auth.getSession();
-  if(error){
-    authMessage('Помилка авторизації: '+error.message);
-    return;
-  }
-  if(data.session){
-    await loadProfile(data.session.user);
-  }
-  if(window.location.hash.includes('type=recovery')){
-    showRecoveryMode();
-  }
+  if(error){authMessage('Помилка авторизації: '+error.message);return;}
+  if(data.session)await loadProfile(data.session.user);
+  if(window.location.hash.includes('type=recovery'))showRecoveryMode();
 }
 
 db.auth.onAuthStateChange((event,session)=>{
-  if(event==='PASSWORD_RECOVERY'){
-    showRecoveryMode();
-  }
+  if(event==='PASSWORD_RECOVERY')showRecoveryMode();
   if(event==='SIGNED_OUT'){
-    currentUser=null;
-    currentProfile=null;
+    currentUser=null;currentProfile=null;
     $('appScreen').classList.add('hidden');
     $('authScreen').classList.remove('hidden');
   }
